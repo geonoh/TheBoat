@@ -3,3 +3,7 @@
 
 #include "LoginGameMode.h"
 
+ALoginGameMode::ALoginGameMode()
+{
+
+}
