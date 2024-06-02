@@ -18,7 +18,7 @@ class THEBOAT_API ULoginWidget : public UUserWidget
 	
 public:
 	virtual void NativeConstruct() override;
-	void Set();
+	void Set() const;
 
 protected:
 	UPROPERTY(meta = (BindWidget))
@@ -26,4 +26,8 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* LoginText;
+
+private:
+	UFUNCTION()
+	void OnLoginButtonClicked();
 };
