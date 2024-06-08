@@ -3,6 +3,18 @@
 
 #include "CombatWidget.h"
 
+#include "Components/ProgressBar.h"
+#include "Components/TextBlock.h"
+
+void UCombatWidget::Set()
+{
+	const FString LeftTimeStringFormat("남은시간 : %d");
+	const FText LeftTimeText = FText::FromString(LeftTimeStringFormat);
+	LeftTime->SetText(TEXT("LEftTime"));
+
+	AmmoProgressBar->SetPercent(50.f);
+}
+
 void UCombatWidget::NativeConstruct()
 {
 	Super::NativeConstruct();

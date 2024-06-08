@@ -16,6 +16,9 @@ class THEBOAT_API UCombatWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	void Set();
+
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
