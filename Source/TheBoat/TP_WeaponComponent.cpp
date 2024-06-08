@@ -2,7 +2,7 @@
 
 
 #include "TP_WeaponComponent.h"
-#include "TheBoatCharacter.h"
+#include "CombatCharacter.h"
 #include "TheBoatProjectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
@@ -66,7 +66,7 @@ void UTP_WeaponComponent::Fire()
 	}
 }
 
-bool UTP_WeaponComponent::AttachWeapon(ATheBoatCharacter* TargetCharacter)
+bool UTP_WeaponComponent::AttachWeapon(ACombatCharacter* TargetCharacter)
 {
 	Character = TargetCharacter;
 

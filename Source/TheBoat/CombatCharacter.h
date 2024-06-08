@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
-#include "TheBoatCharacter.generated.h"
+#include "CombatCharacter.generated.h"
 
 class UInputComponent;
 class USkeletalMeshComponent;
@@ -17,7 +17,7 @@ struct FInputActionValue;
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
 UCLASS(config=Game)
-class ATheBoatCharacter : public ACharacter
+class ACombatCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -38,7 +38,7 @@ class ATheBoatCharacter : public ACharacter
 	UInputAction* MoveAction;
 	
 public:
-	ATheBoatCharacter();
+	ACombatCharacter();
 
 protected:
 	virtual void BeginPlay();

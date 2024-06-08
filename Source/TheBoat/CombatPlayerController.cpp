@@ -1,11 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 
-#include "TheBoatPlayerController.h"
+#include "CombatPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
 
-void ATheBoatPlayerController::BeginPlay()
+void ACombatPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 

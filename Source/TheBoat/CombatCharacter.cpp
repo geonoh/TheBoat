@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "TheBoatCharacter.h"
+#include "CombatCharacter.h"
 #include "TheBoatProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -14,9 +14,9 @@
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 //////////////////////////////////////////////////////////////////////////
-// ATheBoatCharacter
+// ACombatCharacter
 
-ATheBoatCharacter::ATheBoatCharacter()
+ACombatCharacter::ACombatCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -38,7 +38,7 @@ ATheBoatCharacter::ATheBoatCharacter()
 
 }
 
-void ATheBoatCharacter::BeginPlay()
+void ACombatCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
@@ -46,7 +46,7 @@ void ATheBoatCharacter::BeginPlay()
 
 //////////////////////////////////////////////////////////////////////////// Input
 
-void ATheBoatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACombatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {	
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
@@ -56,10 +56,10 @@ void ATheBoatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATheBoatCharacter::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACombatCharacter::Move);
 
 		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheBoatCharacter::Look);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACombatCharacter::Look);
 	}
 	else
 	{
@@ -68,7 +68,7 @@ void ATheBoatCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 }
 
 
-void ATheBoatCharacter::Move(const FInputActionValue& Value)
+void ACombatCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
@@ -81,7 +81,7 @@ void ATheBoatCharacter::Move(const FInputActionValue& Value)
 	}
 }
 
-void ATheBoatCharacter::Look(const FInputActionValue& Value)
+void ACombatCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();

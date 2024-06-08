@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "TheBoatPlayerController.generated.h"
+#include "CombatPlayerController.generated.h"
 
 class UInputMappingContext;
 
@@ -12,7 +12,7 @@ class UInputMappingContext;
  *
  */
 UCLASS()
-class THEBOAT_API ATheBoatPlayerController : public APlayerController
+class THEBOAT_API ACombatPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	

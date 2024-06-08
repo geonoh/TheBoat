@@ -6,7 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "TP_WeaponComponent.generated.h"
 
-class ATheBoatCharacter;
+class ACombatCharacter;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class THEBOAT_API UTP_WeaponComponent : public USkeletalMeshComponent
@@ -43,7 +43,7 @@ public:
 
 	/** Attaches the actor to a FirstPersonCharacter */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
-	bool AttachWeapon(ATheBoatCharacter* TargetCharacter);
+	bool AttachWeapon(ACombatCharacter* TargetCharacter);
 
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
@@ -56,5 +56,5 @@ protected:
 
 private:
 	/** The Character holding this weapon*/
-	ATheBoatCharacter* Character;
+	ACombatCharacter* Character;
 };
