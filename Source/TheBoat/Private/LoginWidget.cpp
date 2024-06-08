@@ -21,5 +21,5 @@ void ULoginWidget::Set() const
 // ReSharper disable once CppMemberFunctionMayBeConst
 void ULoginWidget::OnLoginButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("FirstPersonMap"));
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Lobby"));
 }
