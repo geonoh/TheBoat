@@ -1,4 +1,4 @@
-// It's made by Geon Oh
+ï»¿// It's made by Geon Oh
 
 
 #include "CombatWidget.h"
@@ -8,11 +8,15 @@
 
 void UCombatWidget::Set()
 {
-	const FString LeftTimeStringFormat("³²Àº½Ã°£ : %d");
+	const FString LeftTimeStringFormat(TEXT("ë‚¨ì€ì‹œê°„ : %d"));
 	const FText LeftTimeText = FText::FromString(LeftTimeStringFormat);
-	LeftTime->SetText(TEXT("LEftTime"));
-
+	LeftTime->SetText(LeftTimeText);
 	AmmoProgressBar->SetPercent(50.f);
+}
+
+void UCombatWidget::ShowItemGenerateSign()
+{
+	PlayAnimation(ItemGenAnim);
 }
 
 void UCombatWidget::NativeConstruct()

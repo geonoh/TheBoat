@@ -15,6 +15,9 @@ class THEBOAT_API ACombatHUD : public AHUD
 {
 	GENERATED_BODY()
 
+public:
+	void OnItemGenerateStart();
+
 protected:
 	virtual void BeginPlay() override;
 

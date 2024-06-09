@@ -7,6 +7,17 @@
 #include "Blueprint/UserWidget.h"
 #include "TheBoat/TheBoat.h"
 
+void ACombatHUD::OnItemGenerateStart()
+{
+	if (!CombatWidget)
+	{
+		check(false);
+		return;
+	}
+
+	CombatWidget->ShowItemGenerateSign();
+}
+
 void ACombatHUD::BeginPlay()
 {
 	Super::BeginPlay();

@@ -18,6 +18,7 @@ class THEBOAT_API UCombatWidget : public UUserWidget
 
 public:
 	void Set();
+	void ShowItemGenerateSign();
 
 protected:
 	virtual void NativeConstruct() override;
@@ -28,4 +29,7 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UProgressBar* AmmoProgressBar;
+
+	UPROPERTY(Transient, meta = (BindWidgetAnim))
+	UWidgetAnimation* ItemGenAnim;
 };

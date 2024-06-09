@@ -13,7 +13,12 @@ class ACombatGameMode : public AGameModeBase
 
 public:
 	ACombatGameMode();
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	void OnItemGenerateStart();
+
+	FTimerHandle ItemGenerateTimerHandle;
 };
-
-
-
