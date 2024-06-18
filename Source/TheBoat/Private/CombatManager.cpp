@@ -8,9 +8,20 @@
 #include "PartsSpawner.h"
 #include "TheBoat/TheBoat.h"
 
-void UCombatManager::EnterCombat()
+UCombatManager::UCombatManager(): World(nullptr)
 {
-	GetWorld()->GetTimerManager().SetTimer(
+}
+
+void UCombatManager::OnEnterCombatWorld(const UWorld* InWorld)
+{
+	if (!InWorld)
+	{
+		return;
+	}
+
+	World = InWorld;
+
+	InWorld->GetTimerManager().SetTimer(
 		ItemGenerateTimerHandle,
 		this,
 		&UCombatManager::OnItemGenerateStart,
@@ -21,7 +32,13 @@ void UCombatManager::EnterCombat()
 
 void UCombatManager::LoadSpawner()
 {
-	for (TActorIterator<APartsSpawner> Iter(GetWorld()); Iter; ++Iter)
+	if (!World)
+	{
+		BOAT_LOG(Error, TEXT("OnEnterCombatWorld First"));
+		return;
+	}
+
+	for (TActorIterator<APartsSpawner> Iter(World); Iter; ++Iter)
 	{
 		Spawners.Add(*Iter);
 	}
@@ -29,7 +46,13 @@ void UCombatManager::LoadSpawner()
 
 void UCombatManager::OnItemGenerateStart() const
 {
-	ACombatHUD* CombatHUD = Cast<ACombatHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	if (!World)
+	{
+		BOAT_LOG(Error, TEXT("OnEnterCombatWorld First"));
+		return;
+	}
+
+	ACombatHUD* CombatHUD = Cast<ACombatHUD>(World->GetFirstPlayerController()->GetHUD());
 	if (!CombatHUD)
 	{
 		BOAT_LOG(Error, TEXT("CombatHUD did not create"));

@@ -17,5 +17,5 @@ ACombatGameMode::ACombatGameMode()
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	GetManagers().GetCombatManager().EnterCombat();
+	GetManagers().GetCombatManager().OnEnterCombatWorld(GetWorld());
 }

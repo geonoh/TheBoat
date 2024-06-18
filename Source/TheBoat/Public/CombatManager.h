@@ -11,12 +11,13 @@ class APartsSpawner;
  * 
  */
 UCLASS()
-class THEBOAT_API UCombatManager : public UManagerBase
+class THEBOAT_API UCombatManager : public UObject
 {
 	GENERATED_BODY()
 
 public:
-	void EnterCombat();
+	UCombatManager();
+	void OnEnterCombatWorld(const UWorld* InWorld);
 
 private:
 	void LoadSpawner();
@@ -24,4 +25,7 @@ private:
 
 	FTimerHandle ItemGenerateTimerHandle;
 	TArray<APartsSpawner*> Spawners;
+
+	UPROPERTY()
+	const UWorld* World;
 };
