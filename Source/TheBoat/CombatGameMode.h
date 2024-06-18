@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "CombatGameMode.generated.h"
 
+class APartsSpawner;
+
 UCLASS(minimalapi)
 class ACombatGameMode : public AGameModeBase
 {
@@ -16,9 +18,4 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-private:
-	void OnItemGenerateStart();
-
-	FTimerHandle ItemGenerateTimerHandle;
 };

@@ -2,8 +2,8 @@
 
 #include "CombatGameMode.h"
 
-#include "CombatHUD.h"
-#include "TheBoat.h"
+#include "CombatManager.h"
+#include "ManagerBase.h"
 #include "UObject/ConstructorHelpers.h"
 
 ACombatGameMode::ACombatGameMode()
@@ -17,18 +17,5 @@ ACombatGameMode::ACombatGameMode()
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->GetTimerManager().SetTimer(ItemGenerateTimerHandle, this, &ACombatGameMode::OnItemGenerateStart, 5.f, true);
-}
-
-void ACombatGameMode::OnItemGenerateStart()
-{
-	ACombatHUD* CombatHUD = Cast<ACombatHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	if (!CombatHUD)
-	{
-		BOAT_LOG(Error, TEXT("CombatHUD did not create"));
-		check(false);
-		return;
-	}
-
-	CombatHUD->OnItemGenerateStart();
+	GetManagers().GetCombatManager().EnterCombat();
 }
