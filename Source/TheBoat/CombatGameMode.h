@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "CombatGameMode.generated.h"
 
+class UCombatManager;
 class APartsSpawner;
 
 UCLASS(minimalapi)
@@ -16,6 +17,9 @@ class ACombatGameMode : public AGameModeBase
 public:
 	ACombatGameMode();
 
-protected:
+private:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UCombatManager* CombatManager;	
 };

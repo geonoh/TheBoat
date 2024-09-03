@@ -75,3 +75,6 @@ DerivedDataCache/*
 
 # UnrealEngine
 enc_temp_folder/*
+
+# Rider
+.idea/
