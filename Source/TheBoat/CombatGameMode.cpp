@@ -18,7 +18,7 @@ void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CombatManager = NewObject<UCombatManager>();
+	CombatManager = NewObject<UCombatManager>(GetWorld());
 	if (!CombatManager)
 	{
 		BOAT_LOG(Error, TEXT("CombatManager create failed"));

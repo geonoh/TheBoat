@@ -19,12 +19,10 @@ public:
 	void OnEnterCombatWorld(const UWorld* InWorld);
 
 private:
+	void InitCombatWorld();
 	void LoadSpawner();
 	void OnItemGenerateStart() const;
 
 	FTimerHandle ItemGenerateTimerHandle;
 	TArray<APartsSpawner*> Spawners;
-
-	UPROPERTY()
-	const UWorld* World;
 };

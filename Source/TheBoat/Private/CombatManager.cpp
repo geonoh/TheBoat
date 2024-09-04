@@ -8,33 +8,39 @@
 #include "PartsSpawner.h"
 #include "TheBoat/TheBoat.h"
 
-UCombatManager::UCombatManager(): World(nullptr)
+UCombatManager::UCombatManager()
 {
 }
 
 void UCombatManager::OnEnterCombatWorld(const UWorld* InWorld)
 {
-	if (!InWorld)
+	InitCombatWorld();
+}
+
+void UCombatManager::InitCombatWorld()
+{
+	UWorld* World = GetWorld();
+	if (!World)
 	{
 		return;
 	}
-
-	World = InWorld;
-
-	InWorld->GetTimerManager().SetTimer(
+	
+	World->GetTimerManager().SetTimer(
 		ItemGenerateTimerHandle,
 		this,
 		&UCombatManager::OnItemGenerateStart,
 		5.f,
 		true
 	);
+
+	LoadSpawner();
 }
 
 void UCombatManager::LoadSpawner()
 {
+	UWorld* World = GetWorld();
 	if (!World)
 	{
-		BOAT_LOG(Error, TEXT("OnEnterCombatWorld First"));
 		return;
 	}
 
@@ -46,9 +52,9 @@ void UCombatManager::LoadSpawner()
 
 void UCombatManager::OnItemGenerateStart() const
 {
+	UWorld* World = GetWorld();
 	if (!World)
 	{
-		BOAT_LOG(Error, TEXT("OnEnterCombatWorld First"));
 		return;
 	}
 
