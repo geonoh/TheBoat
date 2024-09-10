@@ -69,4 +69,7 @@ void UCombatManager::OnItemGenerateStart() const
 		BOAT_LOG(Error, TEXT("CombatHUD did not create"));
 		check(false);
 	}
+
+	const int RandomNumber = rand() % Spawners.Num();
+	Spawners[RandomNumber]->SpawnPart();
 }
