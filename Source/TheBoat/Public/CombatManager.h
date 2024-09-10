@@ -16,6 +16,7 @@ class THEBOAT_API UCombatManager : public UObject
 
 public:
 	UCombatManager();
+	virtual ~UCombatManager() override;
 	void OnEnterCombatWorld(const UWorld* InWorld);
 
 private:

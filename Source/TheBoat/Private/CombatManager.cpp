@@ -12,6 +12,11 @@ UCombatManager::UCombatManager()
 {
 }
 
+UCombatManager::~UCombatManager()
+{
+	Spawners.Empty();
+}
+
 void UCombatManager::OnEnterCombatWorld(const UWorld* InWorld)
 {
 	InitCombatWorld();
