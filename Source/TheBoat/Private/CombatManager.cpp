@@ -72,4 +72,14 @@ void UCombatManager::OnItemGenerateStart() const
 
 	const int RandomNumber = rand() % Spawners.Num();
 	Spawners[RandomNumber]->SpawnPart();
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(
+			-1,
+			5.0f,
+			FColor::Yellow,
+			TEXT("Item generated")
+			);
+	}
 }
