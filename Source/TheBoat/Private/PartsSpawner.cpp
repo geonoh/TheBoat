@@ -16,7 +16,7 @@ APartsSpawner::APartsSpawner()
 void APartsSpawner::SpawnPart()
 {
 	APart* SpawnedPart = GetWorld()->SpawnActor<APart>(
-		APart::StaticClass(), 
+		PartClass, 
 		GetActorLocation(),
 		GetActorRotation()
 	);

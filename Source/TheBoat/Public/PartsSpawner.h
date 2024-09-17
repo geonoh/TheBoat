@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "PartsSpawner.generated.h"
 
+class APart;
+
 UCLASS()
 class THEBOAT_API APartsSpawner : public AActor
 {
@@ -25,4 +27,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly, Category="Part class")
+	TSubclassOf<APart> PartClass;
 };
