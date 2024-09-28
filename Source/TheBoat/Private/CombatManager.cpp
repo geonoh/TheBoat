@@ -17,14 +17,20 @@ UCombatManager::~UCombatManager()
 	Spawners.Empty();
 }
 
-void UCombatManager::OnEnterCombatWorld(const UWorld* InWorld)
+void UCombatManager::OnEnterCombatWorld()
 {
 	InitCombatWorld();
 }
 
 void UCombatManager::InitCombatWorld()
 {
-	UWorld* World = GetWorld();
+	StartItemGenTimer();
+	LoadSpawner();
+}
+
+void UCombatManager::StartItemGenTimer()
+{
+	const UWorld* World = GetWorld();
 	if (!World)
 	{
 		return;
@@ -37,8 +43,6 @@ void UCombatManager::InitCombatWorld()
 		5.f,
 		true
 	);
-
-	LoadSpawner();
 }
 
 void UCombatManager::LoadSpawner()

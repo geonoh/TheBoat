@@ -3,11 +3,12 @@
 #include "CombatGameMode.h"
 
 #include "CombatManager.h"
+#include "Producer.h"
 #include "TheBoat.h"
 #include "UObject/ConstructorHelpers.h"
 
 ACombatGameMode::ACombatGameMode()
-	: Super(), CombatManager(nullptr)
+	: Super()
 {
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_CombatCharacter"));
@@ -17,19 +18,10 @@ ACombatGameMode::ACombatGameMode()
 void ACombatGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	CombatManager = NewObject<UCombatManager>(GetWorld());
-	if (!CombatManager)
-	{
-		BOAT_LOG(Error, TEXT("CombatManager create failed"));
-		return;
-	}
-
-	CombatManager->OnEnterCombatWorld(GetWorld());
+	GetProducer().GetCombatManager().OnEnterCombatWorld();
 }
 
 void ACombatGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	CombatManager = nullptr;
 	Super::EndPlay(EndPlayReason);
 }

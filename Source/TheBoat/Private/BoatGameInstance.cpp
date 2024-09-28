@@ -9,12 +9,13 @@ void UBoatGameInstance::Init()
 {
 	Super::Init();
 
-	UProducer::InitInstance(NewObject<UProducer>(this));
+	UProducer::InitInstance(this);
+	GetProducer().InitManagers();
 }
 
 void UBoatGameInstance::Shutdown()
 {
 	Super::Shutdown();
 	
-	UProducer::DestroyInstance();
+	GetProducer().OnShuttingDown();
 }

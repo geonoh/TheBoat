@@ -3,16 +3,48 @@
 
 #include "Producer.h"
 
+#include "CombatManager.h"
+
 UProducer* UProducer::Instance = nullptr;
 
-void UProducer::InitInstance(UProducer* NewInstance)
+void UProducer::InitInstance(UGameInstance* GameInstance)
 {
-	Instance = NewInstance;
+	Instance = NewObject<UProducer>(GameInstance);
+	Instance->AddToRoot();  // Skip GC
 }
 
-void UProducer::DestroyInstance()
+UProducer::UProducer(): CombatManager(nullptr)
 {
-	Instance = nullptr;
+}
 
-	// Free managers
+UProducer::~UProducer()
+{
+	DestroyManagers();
+}
+
+void UProducer::OnShuttingDown()
+{
+	Instance->RemoveFromRoot();	// GC On
+	Instance = nullptr;
+}
+
+void UProducer::InitManagers()
+{
+	CombatManager = NewObject<UCombatManager>(this);
+}
+
+void UProducer::DestroyManagers()
+{
+	CombatManager = nullptr;
+}
+
+UCombatManager& UProducer::GetCombatManager() const
+{
+	if (CombatManager == nullptr)
+	{
+		BOAT_LOG(Error, TEXT("CombatManager does not exist."));
+		check(false);
+	}
+	
+	return *CombatManager;
 }

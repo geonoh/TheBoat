@@ -17,10 +17,11 @@ class THEBOAT_API UCombatManager : public UObject
 public:
 	UCombatManager();
 	virtual ~UCombatManager() override;
-	void OnEnterCombatWorld(const UWorld* InWorld);
+	void OnEnterCombatWorld();
 
 private:
 	void InitCombatWorld();
+	void StartItemGenTimer();
 	void LoadSpawner();
 	void OnItemGenerateStart() const;
 

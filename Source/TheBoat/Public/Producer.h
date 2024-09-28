@@ -28,8 +28,18 @@ public:
 		return *Instance;
 	}
 	
-	static void InitInstance(UProducer* NewInstance);
-	static void DestroyInstance();
+	static void InitInstance(UGameInstance* GameInstance);
+
+public:
+	UProducer();
+	virtual ~UProducer() override;
+	
+	void OnShuttingDown();
+
+	void InitManagers();
+	void DestroyManagers();
+	
+	UCombatManager& GetCombatManager() const;
 	
 private:
 	static UProducer* Instance;
