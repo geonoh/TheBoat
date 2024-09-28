@@ -1,8 +1,22 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TheBoat.h"
+
+#include "BoatGameInstance.h"
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, TheBoat, "TheBoat" );
 
 DEFINE_LOG_CATEGORY(BOAT_LOG);
+
+UBoatGameInstance* GetBoatGameInstance(const UWorld* World)
+{
+	if (!World)
+	{
+		BOAT_LOG(Error, TEXT("GetBoatGameInstance : World is nullptr"));
+		return nullptr;
+	}
+	
+	UBoatGameInstance* RetVal = Cast<UBoatGameInstance>(World->GetGameInstance());
+	return RetVal;
+}
