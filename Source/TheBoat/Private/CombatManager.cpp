@@ -5,6 +5,7 @@
 
 #include "CombatHUD.h"
 #include "EngineUtils.h"
+#include "Part.h"
 #include "PartsSpawner.h"
 #include "TheBoat/TheBoat.h"
 
@@ -20,6 +21,11 @@ UCombatManager::~UCombatManager()
 void UCombatManager::OnEnterCombatWorld()
 {
 	InitCombatWorld();
+}
+
+void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
+{
+	// Gunny TODO
 }
 
 void UCombatManager::InitCombatWorld()
@@ -61,21 +67,17 @@ void UCombatManager::LoadSpawner()
 
 void UCombatManager::OnItemGenerateStart() const
 {
-	UWorld* World = GetWorld();
-	if (!World)
-	{
-		return;
-	}
-
-	ACombatHUD* CombatHUD = Cast<ACombatHUD>(World->GetFirstPlayerController()->GetHUD());
+	ACombatHUD* CombatHUD = Cast<ACombatHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if (!CombatHUD)
 	{
-		BOAT_LOG(Error, TEXT("CombatHUD did not create"));
 		check(false);
 	}
 
 	const int RandomNumber = rand() % Spawners.Num();
-	Spawners[RandomNumber]->SpawnPart();
+	APart* Part = Spawners[RandomNumber]->SpawnPart();
+
+	const EPartType PartType = static_cast<EPartType>(rand() % static_cast<int32>(EPartType::Max));
+	Part->OnGenerated(PartType);
 
 	if (GEngine)
 	{

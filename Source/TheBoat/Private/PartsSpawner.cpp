@@ -13,13 +13,16 @@ APartsSpawner::APartsSpawner()
 
 }
 
-void APartsSpawner::SpawnPart()
+APart* APartsSpawner::SpawnPart() const
 {
 	APart* SpawnedPart = GetWorld()->SpawnActor<APart>(
 		PartClass, 
 		GetActorLocation(),
 		GetActorRotation()
 	);
+
+	check(SpawnedPart);
+	return SpawnedPart;
 }
 
 // Called when the game starts or when spawned

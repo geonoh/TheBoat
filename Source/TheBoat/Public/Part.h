@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Part.generated.h"
 
+enum class EPartType;
+
 UCLASS()
 class THEBOAT_API APart : public AActor
 {
@@ -14,6 +16,9 @@ class THEBOAT_API APart : public AActor
 public:	
 	// Sets default values for this actor's properties
 	APart();
+
+	EPartType GetPartType() const { return PartType; }
+	void OnGenerated(EPartType InPartType);
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,4 +31,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	EPartType PartType;
 };

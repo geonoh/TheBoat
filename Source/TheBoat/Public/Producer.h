@@ -22,7 +22,7 @@ public:
 	{
 		if (!Instance)
 		{
-			BOAT_LOG(Error, TEXT("UProducer : Use before init"));
+			check(false);
 		}
 
 		return *Instance;

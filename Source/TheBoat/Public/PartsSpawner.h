@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "PartsSpawner.generated.h"
 
+enum class EPartType;
 class APart;
 
 UCLASS()
@@ -17,7 +18,7 @@ public:
 	// Sets default values for this actor's properties
 	APartsSpawner();
 
-	void SpawnPart();
+	APart* SpawnPart() const;
 
 protected:
 	// Called when the game starts or when spawned

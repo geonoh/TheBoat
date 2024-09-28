@@ -42,7 +42,6 @@ UCombatManager& UProducer::GetCombatManager() const
 {
 	if (CombatManager == nullptr)
 	{
-		BOAT_LOG(Error, TEXT("CombatManager does not exist."));
 		check(false);
 	}
 	

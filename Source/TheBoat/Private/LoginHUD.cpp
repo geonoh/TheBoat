@@ -14,7 +14,6 @@ void ALoginHUD::BeginPlay()
 	LoginWidget = Cast<ULoginWidget>(CreateWidget(GetWorld(), LoginWidgetClass));
 	if (!LoginWidget)
 	{
-		BOAT_LOG(Error, TEXT("LoginWidget does not exist"));
 		check(false);
 		return;
 	}

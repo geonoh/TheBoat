@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Defines.h"
 
 class UProducer;
 class UBoatGameInstance;

@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "CombatManager.generated.h"
 
+class APart;
+class ACombatCharacter;
 class APartsSpawner;
 /**
  * 
@@ -19,6 +21,10 @@ public:
 	virtual ~UCombatManager() override;
 	void OnEnterCombatWorld();
 
+// Gunny TODO : Network
+public:
+	void OnCollision(ACombatCharacter* Character, APart* Part);
+	
 private:
 	void InitCombatWorld();
 	void StartItemGenTimer();
@@ -26,5 +32,7 @@ private:
 	void OnItemGenerateStart() const;
 
 	FTimerHandle ItemGenerateTimerHandle;
+
+	UPROPERTY()
 	TArray<APartsSpawner*> Spawners;
 };

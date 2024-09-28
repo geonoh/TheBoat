@@ -14,8 +14,7 @@ UBoatGameInstance* GetBoatGameInstance(const UWorld* World)
 {
 	if (!World)
 	{
-		BOAT_LOG(Error, TEXT("GetBoatGameInstance : World is nullptr"));
-		return nullptr;
+		check(false);
 	}
 	
 	UBoatGameInstance* RetVal = Cast<UBoatGameInstance>(World->GetGameInstance());

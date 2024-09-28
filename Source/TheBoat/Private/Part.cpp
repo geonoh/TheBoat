@@ -3,13 +3,21 @@
 
 #include "Part.h"
 
+#include "CombatManager.h"
+#include "Producer.h"
 #include "TheBoat/CombatCharacter.h"
+#include "TheBoat/TheBoat.h"
 
 // Sets default values
 APart::APart()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+}
+
+void APart::OnGenerated(const EPartType InPartType)
+{
+	PartType = InPartType;
 }
 
 // Called when the game starts or when spawned
@@ -26,9 +34,7 @@ void APart::OnCollision(AActor* CollideActor)
 		return;
 	}
 
-	// TODO
-	// 1. Remove part
-	// 2. Add part to inventory
+	GetProducer().GetCombatManager().OnCollision(Character, this);
 }
 
 // Called every frame

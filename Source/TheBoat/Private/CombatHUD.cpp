@@ -25,9 +25,7 @@ void ACombatHUD::BeginPlay()
 	CombatWidget = Cast<UCombatWidget>(CreateWidget(GetWorld(), CombatWidgetClass));
 	if (!CombatWidget)
 	{
-		BOAT_LOG(Error, TEXT("LobbyWidget does not exist."));
 		check(false);
-		return;
 	}
 
 	CombatWidget->AddToViewport();
