@@ -15,4 +15,5 @@ class THEBOAT_API UBoatGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 	virtual void Init() override;
+	virtual void Shutdown() override;
 };

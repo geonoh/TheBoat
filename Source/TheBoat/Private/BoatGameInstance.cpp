@@ -3,9 +3,18 @@
 
 #include "BoatGameInstance.h"
 
+#include "Producer.h"
+
 void UBoatGameInstance::Init()
 {
 	Super::Init();
 
-	// 1. Allocate Managers
+	UProducer::InitInstance(NewObject<UProducer>(this));
+}
+
+void UBoatGameInstance::Shutdown()
+{
+	Super::Shutdown();
+	
+	UProducer::DestroyInstance();
 }

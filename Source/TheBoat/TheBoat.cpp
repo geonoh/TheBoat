@@ -3,6 +3,7 @@
 #include "TheBoat.h"
 
 #include "BoatGameInstance.h"
+#include "Producer.h"
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, TheBoat, "TheBoat" );
@@ -19,4 +20,9 @@ UBoatGameInstance* GetBoatGameInstance(const UWorld* World)
 	
 	UBoatGameInstance* RetVal = Cast<UBoatGameInstance>(World->GetGameInstance());
 	return RetVal;
+}
+
+UProducer& GetProducer()
+{
+	return UProducer::Get();
 }
