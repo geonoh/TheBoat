@@ -28,7 +28,7 @@ void UProducer::OnShuttingDown()
 	Instance = nullptr;
 }
 
-void UProducer::InitManagers()
+void UProducer::AllocateManagers()
 {
 	CombatManager = NewObject<UCombatManager>(this);
 }

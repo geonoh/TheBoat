@@ -10,7 +10,7 @@ void UBoatGameInstance::Init()
 	Super::Init();
 
 	UProducer::InitInstance(this);
-	GetProducer().InitManagers();
+	GetProducer().AllocateManagers();
 }
 
 void UBoatGameInstance::Shutdown()

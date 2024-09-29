@@ -11,6 +11,7 @@
 class UCombatManager;
 /**
  * Producer manages Managers
+ * It makes on GameInstance Init()
  */
 UCLASS()
 class THEBOAT_API UProducer : public UObject
@@ -36,7 +37,7 @@ public:
 	
 	void OnShuttingDown();
 
-	void InitManagers();
+	void AllocateManagers();
 	void DestroyManagers();
 	
 	UCombatManager& GetCombatManager() const;

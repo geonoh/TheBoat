@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Defines.h"
 #include "GameFramework/GameModeBase.h"
 #include "CombatGameMode.generated.h"
 
@@ -17,7 +18,12 @@ class ACombatGameMode : public AGameModeBase
 public:
 	ACombatGameMode();
 
+	APartsSpawner* SpawnSpawner(const FCombatSpawnerInfo& Info);
+
 private:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<APartsSpawner> PartsSpawnerClass;
 };
