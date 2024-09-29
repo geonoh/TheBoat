@@ -50,16 +50,15 @@ struct FCombatSpawnerInfo
 
 struct FCombatEnterInfo
 {
-	explicit FCombatEnterInfo(const int64 InMatchId, const int32 InItemGenerateTerm,
+	explicit FCombatEnterInfo(const int64 InMatchId,
 	                          const std::vector<FCombatSpawnerInfo>& InSpawnerInfos,
 	                          const std::vector<FCombatCharacterInfo>& InCharacterInfos)
-		: MatchId(InMatchId), ItemGenerateTerm(InItemGenerateTerm), SpawnerInfos(InSpawnerInfos),
+		: MatchId(InMatchId), SpawnerInfos(InSpawnerInfos),
 		  CharacterInfos(InCharacterInfos)
 	{
 	}
 
 	int64 MatchId;
-	int32 ItemGenerateTerm;
 
 	std::vector<FCombatSpawnerInfo> SpawnerInfos;
 	std::vector<FCombatCharacterInfo> CharacterInfos;

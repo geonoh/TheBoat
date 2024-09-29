@@ -10,7 +10,7 @@
 #include "TheBoat/CombatGameMode.h"
 #include "TheBoat/TheBoat.h"
 
-UCombatManager::UCombatManager()
+UCombatManager::UCombatManager(): GameTime(0)
 {
 }
 
@@ -28,7 +28,6 @@ void UCombatManager::OnEnterCombatWorld()
 	const FCombatEnterInfo TempCombatEnterInfo
 	{
 		0L,
-		60,
 		{
 			FCombatSpawnerInfo(0, 0.0, 0.0, 0.0),
 			FCombatSpawnerInfo(1, 0.0, 0.0, 0.0),
@@ -44,9 +43,9 @@ void UCombatManager::OnEnterCombatWorld()
 			FCombatCharacterInfo(3, ETeamType::Second, {}),
 		}
 	};
-	
-	StartItemGenerateTimer(TempCombatEnterInfo.ItemGenerateTerm);
-	LoadSpawner(TempCombatEnterInfo.SpawnerInfos);
+
+	TempSetItemGenerateTimer();
+	SpawnSpawner(TempCombatEnterInfo.SpawnerInfos);
 }
 
 void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
@@ -54,7 +53,7 @@ void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
 	// Gunny TODO
 }
 
-void UCombatManager::StartItemGenerateTimer(const int32 ItemGenerateTerm)
+void UCombatManager::TempSetItemGenerateTimer()
 {
 	const UWorld* World = GetWorld();
 	if (!World)
@@ -65,13 +64,13 @@ void UCombatManager::StartItemGenerateTimer(const int32 ItemGenerateTerm)
 	World->GetTimerManager().SetTimer(
 		ItemGenerateTimerHandle,
 		this,
-		&UCombatManager::OnItemGenerateStart,
-		ItemGenerateTerm,
+		&UCombatManager::OnItemGenerateTime,
+		60.f,
 		true
 	);
 }
 
-void UCombatManager::LoadSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerInfos)
+void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerInfos)
 {
 	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
 	check(CombatGameMode);
@@ -82,7 +81,11 @@ void UCombatManager::LoadSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerI
 	}
 }
 
-void UCombatManager::OnItemGenerateStart() const
+void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& CharacterInfos)
+{
+}
+
+void UCombatManager::OnItemGenerateTime() const
 {
 	ACombatHUD* CombatHUD = Cast<ACombatHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if (!CombatHUD)
