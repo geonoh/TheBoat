@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-class FPacketRunnable : public FRunnable
+class FPacketReceiveRunnable : public FRunnable
 {
 public:
-	FPacketRunnable();
-	virtual ~FPacketRunnable() override;
+	FPacketReceiveRunnable();
+	explicit FPacketReceiveRunnable(FSocket* InSocket);
+	virtual ~FPacketReceiveRunnable() override;
 
 	virtual bool Init() override;
 	virtual uint32 Run() override;

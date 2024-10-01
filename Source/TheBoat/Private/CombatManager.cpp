@@ -46,6 +46,7 @@ void UCombatManager::OnEnterCombatWorld()
 
 	TempSetItemGenerateTimer();
 	SpawnSpawner(TempCombatEnterInfo.SpawnerInfos);
+	SpawnCharacter(TempCombatEnterInfo.CharacterInfos);
 }
 
 void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
@@ -83,6 +84,10 @@ void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& Spawner
 
 void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& CharacterInfos)
 {
+	for (const auto& Iter : CharacterInfos)
+	{
+		// Gunny TODO
+	}
 }
 
 void UCombatManager::OnItemGenerateTime() const

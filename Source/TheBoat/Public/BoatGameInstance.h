@@ -6,7 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "BoatGameInstance.generated.h"
 
-class FPacketRunnable;
+class FPacketReceiveRunnable;
 /**
  * 
  */
@@ -19,5 +19,8 @@ class THEBOAT_API UBoatGameInstance : public UGameInstance
 	virtual void Shutdown() override;
 
 private:
-	FPacketRunnable* PacketRunnable;
+	FSocket* Socket;
+	FPacketReceiveRunnable* PacketReceiveRunnable;
 };
+
+FSocket* CreateSocket();
