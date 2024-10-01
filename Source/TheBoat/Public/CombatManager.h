@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TheBoat/Defines.h"
+#include "../Shared/Defines.h"
 #include "CombatManager.generated.h"
 
 struct FCombatEnterInfo;

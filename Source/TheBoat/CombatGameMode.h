@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Defines.h"
+#include "../../Shared/Defines.h"
 #include "GameFramework/GameModeBase.h"
 #include "CombatGameMode.generated.h"
 
