@@ -30,12 +30,11 @@ public:
 	}
 	
 	static void InitInstance(UGameInstance* GameInstance);
+	static void OnShuttingDown();
 
 public:
 	UProducer();
 	virtual ~UProducer() override;
-	
-	void OnShuttingDown();
 
 	void AllocateManagers();
 	void DestroyManagers();

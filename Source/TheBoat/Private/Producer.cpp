@@ -13,6 +13,12 @@ void UProducer::InitInstance(UGameInstance* GameInstance)
 	Instance->AddToRoot();  // Skip GC
 }
 
+void UProducer::OnShuttingDown()
+{
+	Instance->RemoveFromRoot();	// GC On
+	Instance = nullptr;
+}
+
 UProducer::UProducer(): CombatManager(nullptr)
 {
 }
@@ -20,12 +26,6 @@ UProducer::UProducer(): CombatManager(nullptr)
 UProducer::~UProducer()
 {
 	DestroyManagers();
-}
-
-void UProducer::OnShuttingDown()
-{
-	Instance->RemoveFromRoot();	// GC On
-	Instance = nullptr;
 }
 
 void UProducer::AllocateManagers()
