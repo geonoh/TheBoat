@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <vector>
 
+static constexpr int BOAT_SERVER_PORT = 5000;
+
 // Gunny TODO
 // Tempcode
 enum class EPartType
@@ -25,8 +27,8 @@ enum class ETeamType
 struct FCombatCharacterInfo
 {
 	explicit FCombatCharacterInfo(int64 InCharacterInfo, ETeamType InTeamType,
-	                              const std::vector<EPartType>& InOwnedTypes)
-	: CharacterId(InCharacterInfo), TeamType(InTeamType), OwnedParts(InOwnedTypes)
+	                              const std::vector<EPartType>& InOwnedParts)
+	: CharacterId(InCharacterInfo), TeamType(InTeamType), OwnedParts(InOwnedParts)
 	{
 	}
 

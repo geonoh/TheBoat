@@ -29,12 +29,9 @@ void UCombatManager::OnEnterCombatWorld()
 	{
 		0L,
 		{
-			FCombatSpawnerInfo(0, 0.0, 0.0, 0.0),
-			FCombatSpawnerInfo(1, 0.0, 0.0, 0.0),
-			FCombatSpawnerInfo(2, 0.0, 0.0, 0.0),
-			FCombatSpawnerInfo(3, 0.0, 0.0, 0.0),
-			FCombatSpawnerInfo(4, 0.0, 0.0, 0.0),
-			FCombatSpawnerInfo(5, 0.0, 0.0, 0.0),
+			FCombatSpawnerInfo(0, 1000.0, 760.0, 0.0),
+			FCombatSpawnerInfo(1, 2170.0, 2290.0, 0.0),
+			FCombatSpawnerInfo(2, 1020.0, 2200.0, 0.0),
 		},
 		{
 			FCombatCharacterInfo(0, ETeamType::First, {}),
