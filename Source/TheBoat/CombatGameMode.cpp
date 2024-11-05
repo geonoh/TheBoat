@@ -2,6 +2,7 @@
 
 #include "CombatGameMode.h"
 
+#include "CombatCharacter.h"
 #include "CombatManager.h"
 #include "PartsSpawner.h"
 #include "Producer.h"
@@ -24,7 +25,22 @@ APartsSpawner* ACombatGameMode::SpawnSpawner(const FCombatSpawnerInfo& Info)
 	APartsSpawner* RetValue =
 		GetWorld()->SpawnActor<APartsSpawner>(
 			PartsSpawnerClass,
-			FVector(Info.XPos, Info.YPos, Info.ZPos),
+			FVector(Info.Pos.X, Info.Pos.Y, Info.Pos.Z),
+			FRotator::ZeroRotator,
+			SpawnParams
+		);
+	return RetValue;
+}
+
+ACombatCharacter* ACombatGameMode::SpawnCombatCharacter(const FCombatCharacterInfo& Info)
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+
+	ACombatCharacter* RetValue =
+		GetWorld()->SpawnActor<ACombatCharacter>(
+			CombatCharacterClass,
+			FVector(Info.Pos.X, Info.Pos.Y, Info.Pos.Z),
 			FRotator::ZeroRotator,
 			SpawnParams
 		);

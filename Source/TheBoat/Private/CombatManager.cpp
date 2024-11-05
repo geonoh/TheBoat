@@ -24,20 +24,21 @@ void UCombatManager::OnEnterCombatWorld()
 	Spawners.Empty();
 	CombatCharacters.Empty();
 
-	// Gunny TODO : Get CombatInfo from server
+	// Gunny TODO : Get MyCharacterId, CombatInfo from server
+	const int64 MyCharacterId = 0;
 	const FCombatEnterInfo TempCombatEnterInfo
 	{
 		0L,
 		{
-			FCombatSpawnerInfo(0, 1000.0, 760.0, 0.0),
-			FCombatSpawnerInfo(1, 2170.0, 2290.0, 0.0),
-			FCombatSpawnerInfo(2, 1020.0, 2200.0, 0.0),
+			FCombatSpawnerInfo(0, {1000.0, 760.0, 0.0}),
+			FCombatSpawnerInfo(1, {2170.0, 2290.0, 0.0}),
+			FCombatSpawnerInfo(2, {1020.0, 2200.0, 0.0}),
 		},
 		{
-			FCombatCharacterInfo(0, ETeamType::First, {}),
-			FCombatCharacterInfo(1, ETeamType::First, {}),
-			FCombatCharacterInfo(2, ETeamType::Second, {}),
-			FCombatCharacterInfo(3, ETeamType::Second, {}),
+			FCombatCharacterInfo(0, ETeamType::First, {}, {}),
+			FCombatCharacterInfo(1, ETeamType::First, {}, {}),
+			FCombatCharacterInfo(2, ETeamType::Second, {}, {}),
+			FCombatCharacterInfo(3, ETeamType::Second, {}, {}),
 		}
 	};
 
@@ -81,9 +82,12 @@ void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& Spawner
 
 void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& CharacterInfos)
 {
-	for (const auto& Iter : CharacterInfos)
+	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
+	check(CombatGameMode);
+
+	for (const FCombatCharacterInfo& Iter : CharacterInfos)
 	{
-		// Gunny TODO
+		CombatCharacters.Add(CombatGameMode->SpawnCombatCharacter(Iter));
 	}
 }
 

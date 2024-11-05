@@ -7,6 +7,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "CombatGameMode.generated.h"
 
+class ACombatCharacter;
 class UCombatManager;
 class APartsSpawner;
 
@@ -19,6 +20,7 @@ public:
 	ACombatGameMode();
 
 	APartsSpawner* SpawnSpawner(const FCombatSpawnerInfo& Info);
+	ACombatCharacter* SpawnCombatCharacter(const FCombatCharacterInfo& Info);
 
 private:
 	virtual void BeginPlay() override;
@@ -26,4 +28,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<APartsSpawner> PartsSpawnerClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ACombatCharacter> CombatCharacterClass;
 };
