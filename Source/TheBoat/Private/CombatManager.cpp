@@ -35,10 +35,10 @@ void UCombatManager::OnEnterCombatWorld()
 			FCombatSpawnerInfo(2, {1020.0, 2200.0, 0.0}),
 		},
 		{
-			FCombatCharacterInfo(0, ETeamType::First, {}, {}),
-			FCombatCharacterInfo(1, ETeamType::First, {}, {}),
-			FCombatCharacterInfo(2, ETeamType::Second, {}, {}),
-			FCombatCharacterInfo(3, ETeamType::Second, {}, {}),
+			FCombatCharacterInfo(0, ETeamType::First, {100.0, 200.0, 300.0 }, {}),
+			FCombatCharacterInfo(1, ETeamType::First, {200.0, 300.0, 400.0}, {}),
+			FCombatCharacterInfo(2, ETeamType::Second, {300.0, 400.0, 500.0}, {}),
+			FCombatCharacterInfo(3, ETeamType::Second, {400.0, 500.0, 600.0}, {}),
 		}
 	};
 
