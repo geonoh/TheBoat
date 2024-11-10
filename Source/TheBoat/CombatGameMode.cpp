@@ -55,5 +55,6 @@ void ACombatGameMode::BeginPlay()
 
 void ACombatGameMode::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	GetProducer().GetCombatManager().OnEndPlay();
 	Super::EndPlay(EndPlayReason);
 }

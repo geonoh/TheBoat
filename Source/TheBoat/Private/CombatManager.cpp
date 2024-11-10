@@ -19,6 +19,11 @@ UCombatManager::~UCombatManager()
 	Spawners.Empty();
 }
 
+void UCombatManager::OnEndPlay()
+{
+	ClearTimer();
+}
+
 void UCombatManager::OnEnterCombatWorld()
 {
 	Spawners.Empty();
@@ -50,6 +55,17 @@ void UCombatManager::OnEnterCombatWorld()
 void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
 {
 	// Gunny TODO
+}
+
+void UCombatManager::ClearTimer()
+{
+	const UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	World->GetTimerManager().ClearTimer(ItemGenerateTimerHandle);
 }
 
 void UCombatManager::TempSetItemGenerateTimer()

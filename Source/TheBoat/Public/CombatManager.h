@@ -22,11 +22,14 @@ public:
 	UCombatManager();
 	virtual ~UCombatManager() override;
 
+	void OnEndPlay();
+
 	// Gunny TODO : It should be gotten from server
 	void OnEnterCombatWorld();
 	void OnCollision(ACombatCharacter* Character, APart* Part);
 	
 private:
+	void ClearTimer();
 	void TempSetItemGenerateTimer();	// Gunny TODO : Temocode. Server will make items
 	
 	void SpawnSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerInfos);
