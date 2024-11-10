@@ -4,6 +4,7 @@
 
 #include "CombatCharacter.h"
 #include "CombatManager.h"
+#include "CombatPlayerController.h"
 #include "PartsSpawner.h"
 #include "Producer.h"
 #include "TheBoat.h"
@@ -12,9 +13,6 @@
 ACombatGameMode::ACombatGameMode()
 	: Super()
 {
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/Blueprints/BP_CombatCharacter"));
-	DefaultPawnClass = PlayerPawnClassFinder.Class;
 }
 
 APartsSpawner* ACombatGameMode::SpawnSpawner(const FCombatSpawnerInfo& Info)
