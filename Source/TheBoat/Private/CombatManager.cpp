@@ -24,6 +24,11 @@ void UCombatManager::OnEndPlay()
 	ClearTimer();
 }
 
+void UCombatManager::UpdateCharacter(int64 CharacterId, const FCombatCharacterInfo& NewInfo)
+{
+	// Gunny TODO : Check diff
+}
+
 void UCombatManager::OnEnterCombatWorld()
 {
 	Spawners.Empty();
@@ -103,6 +108,7 @@ void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& Cha
 
 	for (const FCombatCharacterInfo& Iter : CharacterInfos)
 	{
+		FCombatCharacterInfo* NewInfo = new  FCombatCharacterInfo(Iter);
 		CombatCharacters.Add(Iter.CharacterId, CombatGameMode->SpawnCombatCharacter(Iter));
 	}
 }

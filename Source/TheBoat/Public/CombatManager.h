@@ -24,6 +24,8 @@ public:
 
 	void OnEndPlay();
 
+	void UpdateCharacter(int64 CharacterId, const FCombatCharacterInfo& NewInfo);
+
 	// Gunny TODO : It should be gotten from server
 	void OnEnterCombatWorld();
 	void OnCollision(ACombatCharacter* Character, APart* Part);
