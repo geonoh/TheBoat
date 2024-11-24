@@ -12,6 +12,7 @@ class USkeletalMeshComponent;
 class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
+struct FCombatCharacterInfo;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -40,6 +41,9 @@ class ACombatCharacter : public ACharacter
 public:
 	ACombatCharacter();
 
+	void InitCharacter(const FCombatCharacterInfo& Info);
+	int64 GetCharacterId() const;
+	
 protected:
 	virtual void BeginPlay();
 
@@ -67,5 +71,7 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+private:
+	int64 CharacterId;
 };
 

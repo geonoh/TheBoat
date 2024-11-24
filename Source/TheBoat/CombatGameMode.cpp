@@ -4,7 +4,6 @@
 
 #include "CombatCharacter.h"
 #include "CombatManager.h"
-#include "CombatPlayerController.h"
 #include "PartsSpawner.h"
 #include "Producer.h"
 #include "TheBoat.h"
@@ -42,6 +41,8 @@ ACombatCharacter* ACombatGameMode::SpawnCombatCharacter(const FCombatCharacterIn
 			FRotator::ZeroRotator,
 			SpawnParams
 		);
+
+	RetValue->InitCharacter(Info);
 	return RetValue;
 }
 
