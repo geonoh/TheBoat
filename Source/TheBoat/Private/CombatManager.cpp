@@ -40,7 +40,7 @@ void UCombatManager::OnEnterCombatWorld()
 			FCombatSpawnerInfo(2, {1020.0, 2200.0, 0.0}),
 		},
 		{
-			FCombatCharacterInfo(0, ETeamType::First, {100.0, 200.0, 300.0 }, {}),
+			FCombatCharacterInfo(0, ETeamType::First, {100.0, 200.0, 300.0}, {}),
 			FCombatCharacterInfo(1, ETeamType::First, {200.0, 300.0, 400.0}, {}),
 			FCombatCharacterInfo(2, ETeamType::Second, {300.0, 400.0, 500.0}, {}),
 			FCombatCharacterInfo(3, ETeamType::Second, {400.0, 500.0, 600.0}, {}),
@@ -90,9 +90,9 @@ void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& Spawner
 	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
 	check(CombatGameMode);
 
-	for (const FCombatSpawnerInfo& SpawnerInfo : SpawnerInfos)
+	for (const FCombatSpawnerInfo& Iter : SpawnerInfos)
 	{
-		Spawners.Add(CombatGameMode->SpawnSpawner(SpawnerInfo));
+		Spawners.Add(Iter.SpawnerId, CombatGameMode->SpawnSpawner(Iter));
 	}
 }
 
@@ -103,7 +103,7 @@ void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& Cha
 
 	for (const FCombatCharacterInfo& Iter : CharacterInfos)
 	{
-		CombatCharacters.Add(CombatGameMode->SpawnCombatCharacter(Iter));
+		CombatCharacters.Add(Iter.CharacterId, CombatGameMode->SpawnCombatCharacter(Iter));
 	}
 }
 

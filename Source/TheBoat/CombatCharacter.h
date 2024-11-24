@@ -72,6 +72,7 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 private:
+	UPROPERTY()
 	int64 CharacterId;
 };
 

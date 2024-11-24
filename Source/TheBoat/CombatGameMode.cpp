@@ -26,6 +26,8 @@ APartsSpawner* ACombatGameMode::SpawnSpawner(const FCombatSpawnerInfo& Info)
 			FRotator::ZeroRotator,
 			SpawnParams
 		);
+
+	RetValue->InitSpawner(Info);
 	return RetValue;
 }
 

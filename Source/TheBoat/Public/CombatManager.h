@@ -39,10 +39,10 @@ private:
 	FTimerHandle ItemGenerateTimerHandle;
 
 	UPROPERTY()
-	TArray<APartsSpawner*> Spawners;
+	TMap<int64/*SpawnerId*/, APartsSpawner*> Spawners;
 
 	UPROPERTY()
-	TArray<ACombatCharacter*> CombatCharacters;
+	TMap<int64/*CharacterId*/, ACombatCharacter*> CombatCharacters;
 
 	int64 GameTime;
 };
