@@ -26,7 +26,20 @@ void UCombatManager::OnEndPlay()
 
 void UCombatManager::UpdateCharacter(int64 CharacterId, const FCombatCharacterInfo& NewInfo)
 {
-	// Gunny TODO : Check diff
+	ACombatCharacter** Found = CombatCharacters.Find(CharacterId);
+	if (Found == nullptr)
+	{
+		return;
+	}
+
+	ACombatCharacter* Character = *Found;
+	if (Character == nullptr)
+	{
+		return;
+	}
+	
+	// Gunny TODO
+	// - Only CombatManager can have data. Actor would be updated when mesh update.(Weapon, Equipment ...)
 }
 
 void UCombatManager::OnEnterCombatWorld()
@@ -53,8 +66,8 @@ void UCombatManager::OnEnterCombatWorld()
 	};
 
 	TempSetItemGenerateTimer();
-	SpawnSpawner(TempCombatEnterInfo.SpawnerInfos);
-	SpawnCharacter(TempCombatEnterInfo.CharacterInfos);
+	SpawnSpawners(TempCombatEnterInfo.SpawnerInfos);
+	SpawnCharacters(TempCombatEnterInfo.CharacterInfos);
 }
 
 void UCombatManager::OnCollision(ACombatCharacter* Character, APart* Part)
@@ -90,7 +103,7 @@ void UCombatManager::TempSetItemGenerateTimer()
 	);
 }
 
-void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerInfos)
+void UCombatManager::SpawnSpawners(const std::vector<FCombatSpawnerInfo>& SpawnerInfos)
 {
 	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
 	check(CombatGameMode);
@@ -101,14 +114,13 @@ void UCombatManager::SpawnSpawner(const std::vector<FCombatSpawnerInfo>& Spawner
 	}
 }
 
-void UCombatManager::SpawnCharacter(const std::vector<FCombatCharacterInfo>& CharacterInfos)
+void UCombatManager::SpawnCharacters(const std::vector<FCombatCharacterInfo>& CharacterInfos)
 {
 	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
 	check(CombatGameMode);
 
 	for (const FCombatCharacterInfo& Iter : CharacterInfos)
 	{
-		FCombatCharacterInfo* NewInfo = new  FCombatCharacterInfo(Iter);
 		CombatCharacters.Add(Iter.CharacterId, CombatGameMode->SpawnCombatCharacter(Iter));
 	}
 }

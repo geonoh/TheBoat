@@ -29,13 +29,13 @@ public:
 	// Gunny TODO : It should be gotten from server
 	void OnEnterCombatWorld();
 	void OnCollision(ACombatCharacter* Character, APart* Part);
-	
+
 private:
 	void ClearTimer();
 	void TempSetItemGenerateTimer();	// Gunny TODO : Temocode. Server will make items
 	
-	void SpawnSpawner(const std::vector<FCombatSpawnerInfo>& SpawnerInfos);
-	void SpawnCharacter(const std::vector<FCombatCharacterInfo>& CharacterInfos);
+	void SpawnSpawners(const std::vector<FCombatSpawnerInfo>& SpawnerInfos);
+	void SpawnCharacters(const std::vector<FCombatCharacterInfo>& CharacterInfos);
 	void OnItemGenerateTime() const;
 
 	FTimerHandle ItemGenerateTimerHandle;
