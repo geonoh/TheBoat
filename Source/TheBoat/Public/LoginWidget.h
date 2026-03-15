@@ -8,16 +8,15 @@
 
 class UTextBlock;
 class UButton;
-/**
- * 
- */
+
 UCLASS()
 class THEBOAT_API ULoginWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
 public:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	void Set() const;
 
 protected:
@@ -28,6 +27,12 @@ protected:
 	UTextBlock* LoginText;
 
 private:
+	void HandleStatusMessageChanged(const FString& InStatusMessage) const;
+	void HandleLoginSucceeded();
+
 	UFUNCTION()
 	void OnLoginButtonClicked();
+
+	FDelegateHandle StatusMessageChangedHandle;
+	FDelegateHandle LoginSucceededHandle;
 };

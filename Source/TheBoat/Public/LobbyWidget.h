@@ -7,9 +7,7 @@
 #include "LobbyWidget.generated.h"
 
 class UButton;
-/**
- * 
- */
+
 UCLASS()
 class THEBOAT_API ULobbyWidget : public UUserWidget
 {
@@ -17,6 +15,7 @@ class THEBOAT_API ULobbyWidget : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
+	virtual void NativeDestruct() override;
 	void Set();
 
 protected:
@@ -24,6 +23,10 @@ protected:
 	UButton* StartGame;
 
 private:
+	void HandleMatchCreated(int64 InMatchId);
+
 	UFUNCTION()
 	void OnStartGameButtonClicked();
+
+	FDelegateHandle MatchCreatedHandle;
 };
