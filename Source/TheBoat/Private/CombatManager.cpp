@@ -5,6 +5,7 @@
 
 #include "CombatHUD.h"
 #include "EngineUtils.h"
+#include "GameFramework/PlayerController.h"
 #include "Part.h"
 #include "PartsSpawner.h"
 #include "TheBoat/CombatGameMode.h"
@@ -105,7 +106,9 @@ void UCombatManager::TempSetItemGenerateTimer()
 
 void UCombatManager::SpawnSpawners(const std::vector<FCombatSpawnerInfo>& SpawnerInfos)
 {
-	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
+	UWorld* World = GetWorld();
+	check(World);
+	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(World->GetAuthGameMode());
 	check(CombatGameMode);
 
 	for (const FCombatSpawnerInfo& Iter : SpawnerInfos)
@@ -116,7 +119,9 @@ void UCombatManager::SpawnSpawners(const std::vector<FCombatSpawnerInfo>& Spawne
 
 void UCombatManager::SpawnCharacters(const std::vector<FCombatCharacterInfo>& CharacterInfos)
 {
-	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(GetWorld()->GetAuthGameMode());
+	UWorld* World = GetWorld();
+	check(World);
+	ACombatGameMode* CombatGameMode = Cast<ACombatGameMode>(World->GetAuthGameMode());
 	check(CombatGameMode);
 
 	for (const FCombatCharacterInfo& Iter : CharacterInfos)
@@ -127,10 +132,23 @@ void UCombatManager::SpawnCharacters(const std::vector<FCombatCharacterInfo>& Ch
 
 void UCombatManager::OnItemGenerateTime() const
 {
-	ACombatHUD* CombatHUD = Cast<ACombatHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	ACombatHUD* CombatHUD = Cast<ACombatHUD>(PlayerController->GetHUD());
 	if (!CombatHUD)
 	{
 		check(false);
+		return;
 	}
 
 	const int RandomNumber = rand() % Spawners.Num();
@@ -139,13 +157,15 @@ void UCombatManager::OnItemGenerateTime() const
 	const EPartType PartType = static_cast<EPartType>(rand() % static_cast<int32>(EPartType::Max));
 	Part->OnGenerated(PartType);
 
-	if (GEngine)
+	if (!GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(
-			-1,
-			5.0f,
-			FColor::Yellow,
-			TEXT("Item generated")
-		);
+		return;
 	}
+
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		5.0f,
+		FColor::Yellow,
+		TEXT("Item generated")
+	);
 }

@@ -13,7 +13,17 @@
 
 FSocket* CreateSocket()
 {
-	FSocket* NewSocket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("BoatClientSocket"), false);
+	ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
+	if (!SocketSubsystem)
+	{
+		return nullptr;
+	}
+
+	FSocket* NewSocket = SocketSubsystem->CreateSocket(NAME_Stream, TEXT("BoatClientSocket"), false);
+	if (!NewSocket)
+	{
+		return nullptr;
+	}
 
 	int32 BufferSize = 2 * 1024 * 1024;
 	NewSocket->SetReceiveBufferSize(BufferSize, BufferSize);
@@ -32,13 +42,6 @@ void UBoatGameInstance::Init()
 	GetProducer().AllocateManagers();
 
 	Socket = CreateSocket();
-	PacketReceiveRunnable = nullptr;
-	bIsConnected = false;
-	bIsLoggedIn = false;
-	bIsInQueue = false;
-	SessionId = 0;
-	MatchId = 0;
-	StatusMessage = TEXT("Disconnected");
 
 	TickHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UBoatGameInstance::TickServerMessages));
 }
@@ -58,6 +61,16 @@ void UBoatGameInstance::Shutdown()
 	Super::Shutdown();
 }
 
+void UBoatGameInstance::SetPassthroughMode(const bool bSet)
+{
+	bIsPassthroughMode = bSet;
+}
+
+bool UBoatGameInstance::IsPassthroughMode() const
+{
+	return bIsPassthroughMode;
+}
+
 bool UBoatGameInstance::ConnectToServer()
 {
 	if (bIsConnected)
@@ -70,13 +83,28 @@ bool UBoatGameInstance::ConnectToServer()
 		Socket = CreateSocket();
 	}
 
-	TSharedRef<FInternetAddr> InternetAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
+	if (!Socket)
+	{
+		UpdateStatusMessage(TEXT("Failed to create client socket"));
+		return false;
+	}
+
+	ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
+	if (!SocketSubsystem)
+	{
+		UpdateStatusMessage(TEXT("Socket subsystem unavailable"));
+		return false;
+	}
+
+	TSharedRef<FInternetAddr> InternetAddress = SocketSubsystem->CreateInternetAddr();
 	FIPv4Address ParsedAddress;
-	if (ServerHost.Equals(TEXT("localhost"), ESearchCase::IgnoreCase))
+	const bool bIsLocalhost = ServerHost.Equals(TEXT("localhost"), ESearchCase::IgnoreCase);
+	if (bIsLocalhost)
 	{
 		ParsedAddress = FIPv4Address::InternalLoopback;
 	}
-	else if (!FIPv4Address::Parse(ServerHost, ParsedAddress))
+
+	if (!bIsLocalhost && !FIPv4Address::Parse(ServerHost, ParsedAddress))
 	{
 		UpdateStatusMessage(FString::Printf(TEXT("Invalid server host: %s"), *ServerHost));
 		return false;
@@ -87,7 +115,6 @@ bool UBoatGameInstance::ConnectToServer()
 
 	if (!Socket->Connect(*InternetAddress))
 	{
-		ISocketSubsystem* SocketSubsystem = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM);
 		const ESocketErrors SocketError = SocketSubsystem->GetLastErrorCode();
 		UpdateStatusMessage(FString::Printf(TEXT("Connect failed: %s"), SocketSubsystem->GetSocketError(SocketError)));
 		return false;
@@ -318,11 +345,14 @@ bool UBoatGameInstance::HandleWelcomePacket(const TArray<FString>& InTokens)
 bool UBoatGameInstance::HandleHelloAckPacket(const TArray<FString>& InTokens)
 {
 	bIsLoggedIn = true;
-	if (InTokens.Num() >= 2)
+	if (InTokens.Num() < 2)
 	{
-		PlayerName = InTokens[1];
+		UpdateStatusMessage(FString::Printf(TEXT("Login complete: %s"), *PlayerName));
+		LoginSucceededEvent.Broadcast();
+		return true;
 	}
 
+	PlayerName = InTokens[1];
 	UpdateStatusMessage(FString::Printf(TEXT("Login complete: %s"), *PlayerName));
 	LoginSucceededEvent.Broadcast();
 	return true;
@@ -351,15 +381,17 @@ bool UBoatGameInstance::HandleMatchCreatedPacket(const TArray<FString>& InTokens
 
 bool UBoatGameInstance::HandleErrorPacket(const TArray<FString>& InTokens)
 {
-	FString ErrorMessage = TEXT("Unknown server error");
-	if (InTokens.Num() >= 2)
+	if (InTokens.Num() < 2)
 	{
-		ErrorMessage = InTokens[1];
-		for (int32 Index = 2; Index < InTokens.Num(); ++Index)
-		{
-			ErrorMessage += TEXT(" ");
-			ErrorMessage += InTokens[Index];
-		}
+		UpdateStatusMessage(TEXT("Server error: Unknown server error"));
+		return true;
+	}
+
+	FString ErrorMessage = InTokens[1];
+	for (int32 Index = 2; Index < InTokens.Num(); ++Index)
+	{
+		ErrorMessage += TEXT(" ");
+		ErrorMessage += InTokens[Index];
 	}
 
 	UpdateStatusMessage(FString::Printf(TEXT("Server error: %s"), *ErrorMessage));

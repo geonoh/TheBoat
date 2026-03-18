@@ -25,6 +25,9 @@ public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
 
+	void SetPassthroughMode(bool bSet);
+	bool IsPassthroughMode() const;
+
 	bool ConnectToServer();
 	void DisconnectFromServer();
 
@@ -65,20 +68,21 @@ private:
 	UPROPERTY(Config)
 	int32 ServerPort = DefaultServerPort;
 
-	FSocket* Socket;
-	FPacketReceiveRunnable* PacketReceiveRunnable;
-	TQueue<FString, EQueueMode::Mpsc> PendingPackets;
-	FTSTicker::FDelegateHandle TickHandle;
-	FThreadSafeBool bIsConnected;
-	bool bIsLoggedIn;
-	bool bIsInQueue;
-	int64 SessionId;
-	int64 MatchId;
-	FString PlayerName;
-	FString StatusMessage;
-	FBoatStatusMessageChanged StatusMessageChangedEvent;
-	FBoatLoginSucceeded LoginSucceededEvent;
-	FBoatMatchCreated MatchCreatedEvent;
+	FSocket* Socket = nullptr;
+	FPacketReceiveRunnable* PacketReceiveRunnable = nullptr;
+	TQueue<FString, EQueueMode::Mpsc> PendingPackets{};
+	FTSTicker::FDelegateHandle TickHandle{};
+	FThreadSafeBool bIsConnected = false;
+	bool bIsLoggedIn = false;
+	bool bIsInQueue = false;
+	bool bIsPassthroughMode = false;
+	int64 SessionId = 0;
+	int64 MatchId = 0;
+	FString PlayerName{};
+	FString StatusMessage = TEXT("Disconnected");
+	FBoatStatusMessageChanged StatusMessageChangedEvent{};
+	FBoatLoginSucceeded LoginSucceededEvent{};
+	FBoatMatchCreated MatchCreatedEvent{};
 };
 
 FSocket* CreateSocket();

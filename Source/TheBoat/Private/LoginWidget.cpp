@@ -12,34 +12,57 @@
 void ULoginWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	LoginButton->OnClicked.AddUniqueDynamic(this, &ULoginWidget::OnLoginButtonClicked);
 
-	if (UWorld* World = GetWorld())
+	if (LoginButton)
 	{
-		if (UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World))
-		{
-			StatusMessageChangedHandle = BoatGameInstance->OnStatusMessageChanged().AddUObject(this, &ULoginWidget::HandleStatusMessageChanged);
-			LoginSucceededHandle = BoatGameInstance->OnLoginSucceeded().AddUObject(this, &ULoginWidget::HandleLoginSucceeded);
-		}
+		LoginButton->OnClicked.AddUniqueDynamic(this, &ULoginWidget::OnLoginButtonClicked);
 	}
+
+	if (PassthroughButton)
+	{
+		PassthroughButton->OnClicked.AddUniqueDynamic(this, &ULoginWidget::OnPassthroughButtonClicked);
+	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	StatusMessageChangedHandle = BoatGameInstance->OnStatusMessageChanged().AddUObject(this, &ULoginWidget::HandleStatusMessageChanged);
+	LoginSucceededHandle = BoatGameInstance->OnLoginSucceeded().AddUObject(this, &ULoginWidget::HandleLoginSucceeded);
 }
 
 void ULoginWidget::NativeDestruct()
 {
-	if (UWorld* World = GetWorld())
+	UWorld* World = GetWorld();
+	if (!World)
 	{
-		if (UBoatGameInstance* BoatGameInstance = Cast<UBoatGameInstance>(World->GetGameInstance()))
-		{
-			if (StatusMessageChangedHandle.IsValid())
-			{
-				BoatGameInstance->OnStatusMessageChanged().Remove(StatusMessageChangedHandle);
-			}
+		Super::NativeDestruct();
+		return;
+	}
 
-			if (LoginSucceededHandle.IsValid())
-			{
-				BoatGameInstance->OnLoginSucceeded().Remove(LoginSucceededHandle);
-			}
-		}
+	UBoatGameInstance* BoatGameInstance = Cast<UBoatGameInstance>(World->GetGameInstance());
+	if (!BoatGameInstance)
+	{
+		Super::NativeDestruct();
+		return;
+	}
+
+	if (StatusMessageChangedHandle.IsValid())
+	{
+		BoatGameInstance->OnStatusMessageChanged().Remove(StatusMessageChangedHandle);
+	}
+
+	if (LoginSucceededHandle.IsValid())
+	{
+		BoatGameInstance->OnLoginSucceeded().Remove(LoginSucceededHandle);
 	}
 
 	Super::NativeDestruct();
@@ -47,18 +70,29 @@ void ULoginWidget::NativeDestruct()
 
 void ULoginWidget::Set() const
 {
-	if (UWorld* World = GetWorld())
+	if (!LoginText)
 	{
-		if (UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World))
-		{
-			LoginText->SetText(FText::FromString(BoatGameInstance->GetStatusMessage()));
-		}
+		return;
 	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	LoginText->SetText(FText::FromString(BoatGameInstance->GetStatusMessage()));
 }
 
 void ULoginWidget::OnLoginButtonClicked()
 {
-	UWorld* World = GetWorld();
+	const UWorld* World = GetWorld();
 	if (!World)
 	{
 		return;
@@ -79,12 +113,32 @@ void ULoginWidget::OnLoginButtonClicked()
 	BoatGameInstance->SendHello(PlayerName);
 }
 
+void ULoginWidget::OnPassthroughButtonClicked()
+{
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	BoatGameInstance->SetPassthroughMode(true);
+	UGameplayStatics::OpenLevel(World, TEXT("Lobby"));
+}
+
 void ULoginWidget::HandleStatusMessageChanged(const FString& InStatusMessage) const
 {
-	if (LoginText)
+	if (!LoginText)
 	{
-		LoginText->SetText(FText::FromString(InStatusMessage));
+		return;
 	}
+
+	LoginText->SetText(FText::FromString(InStatusMessage));
 }
 
 void ULoginWidget::HandleLoginSucceeded()

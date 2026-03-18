@@ -16,12 +16,14 @@ FPacketReceiveRunnable::FPacketReceiveRunnable(FSocket* InSocket, TQueue<FString
 
 FPacketReceiveRunnable::~FPacketReceiveRunnable()
 {
-	if (Thread)
+	if (!Thread)
 	{
-		Thread->WaitForCompletion();
-		delete Thread;
-		Thread = nullptr;
+		return;
 	}
+
+	Thread->WaitForCompletion();
+	delete Thread;
+	Thread = nullptr;
 }
 
 bool FPacketReceiveRunnable::Init()
@@ -33,38 +35,42 @@ uint32 FPacketReceiveRunnable::Run()
 {
 	while (StopTaskCounter.GetValue() == 0)
 	{
-		if (Socket && Socket->Wait(ESocketWaitConditions::WaitForRead, FTimespan::FromSeconds(1.0f)))
-		{
-			if (uint32 Size; Socket->HasPendingData(Size))
-			{
-				TArray<uint8> ReceivedData;
-				ReceivedData.SetNumUninitialized(FMath::Min(Size, 65507u));
-				int32 BytesRead = 0;
-				if (!Socket->Recv(ReceivedData.GetData(), ReceivedData.Num(), BytesRead) || BytesRead <= 0)
-				{
-					continue;
-				}
-
-				FUTF8ToTCHAR Converted(reinterpret_cast<const ANSICHAR*>(ReceivedData.GetData()), BytesRead);
-				ReceiveBuffer.AppendChars(Converted.Get(), Converted.Length());
-
-				int32 NewLineIndex = INDEX_NONE;
-				while (ReceiveBuffer.FindChar(TEXT('\n'), NewLineIndex))
-				{
-					FString Packet = ReceiveBuffer.Left(NewLineIndex);
-					Packet.RemoveFromEnd(TEXT("\r"));
-					ReceiveBuffer.RightChopInline(NewLineIndex + 1, EAllowShrinking::No);
-
-					if (!Packet.IsEmpty() && PendingPackets)
-					{
-						PendingPackets->Enqueue(Packet);
-					}
-				}
-			}
-		}
-		else
+		if (!Socket || !Socket->Wait(ESocketWaitConditions::WaitForRead, FTimespan::FromSeconds(1.0f)))
 		{
 			FPlatformProcess::Sleep(0.01f);
+			continue;
+		}
+
+		uint32 Size = 0;
+		if (!Socket->HasPendingData(Size))
+		{
+			continue;
+		}
+
+		TArray<uint8> ReceivedData;
+		ReceivedData.SetNumUninitialized(FMath::Min(Size, 65507u));
+		int32 BytesRead = 0;
+		if (!Socket->Recv(ReceivedData.GetData(), ReceivedData.Num(), BytesRead) || BytesRead <= 0)
+		{
+			continue;
+		}
+
+		FUTF8ToTCHAR Converted(reinterpret_cast<const ANSICHAR*>(ReceivedData.GetData()), BytesRead);
+		ReceiveBuffer.AppendChars(Converted.Get(), Converted.Length());
+
+		int32 NewLineIndex = INDEX_NONE;
+		while (ReceiveBuffer.FindChar(TEXT('\n'), NewLineIndex))
+		{
+			FString Packet = ReceiveBuffer.Left(NewLineIndex);
+			Packet.RemoveFromEnd(TEXT("\r"));
+			ReceiveBuffer.RightChopInline(NewLineIndex + 1, EAllowShrinking::No);
+
+			if (Packet.IsEmpty() || !PendingPackets)
+			{
+				continue;
+			}
+
+			PendingPackets->Enqueue(Packet);
 		}
 	}
 

@@ -11,52 +11,93 @@ void ULobbyWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	if (!StartGame)
+	{
+		return;
+	}
+
 	StartGame->OnClicked.AddUniqueDynamic(this, &ULobbyWidget::OnStartGameButtonClicked);
 
-	if (UWorld* World = GetWorld())
+	UWorld* World = GetWorld();
+	if (!World)
 	{
-		if (UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World))
-		{
-			MatchCreatedHandle = BoatGameInstance->OnMatchCreated().AddUObject(this, &ULobbyWidget::HandleMatchCreated);
-		}
+		return;
 	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	MatchCreatedHandle = BoatGameInstance->OnMatchCreated().AddUObject(this, &ULobbyWidget::HandleMatchCreated);
 }
 
 void ULobbyWidget::NativeDestruct()
 {
-	if (UWorld* World = GetWorld())
+	UWorld* World = GetWorld();
+	if (!World)
 	{
-		if (UBoatGameInstance* BoatGameInstance = Cast<UBoatGameInstance>(World->GetGameInstance()))
-		{
-			if (MatchCreatedHandle.IsValid())
-			{
-				BoatGameInstance->OnMatchCreated().Remove(MatchCreatedHandle);
-			}
-		}
+		Super::NativeDestruct();
+		return;
 	}
 
+	UBoatGameInstance* BoatGameInstance = Cast<UBoatGameInstance>(World->GetGameInstance());
+	if (!BoatGameInstance || !MatchCreatedHandle.IsValid())
+	{
+		Super::NativeDestruct();
+		return;
+	}
+
+	BoatGameInstance->OnMatchCreated().Remove(MatchCreatedHandle);
 	Super::NativeDestruct();
 }
 
 void ULobbyWidget::Set()
 {
-	if (UWorld* World = GetWorld())
+	if (!StartGame)
 	{
-		if (UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World))
-		{
-			StartGame->SetIsEnabled(BoatGameInstance->IsLoggedInToBoatServer());
-		}
+		return;
 	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return;
+	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	const bool bIsLoggedIn = BoatGameInstance->IsLoggedInToBoatServer();
+	const bool bIsPassthroughMode = BoatGameInstance->IsPassthroughMode();
+	StartGame->SetIsEnabled(bIsLoggedIn || bIsPassthroughMode);
 }
 
 void ULobbyWidget::OnStartGameButtonClicked()
 {
-	if (UWorld* World = GetWorld())
+	UWorld* World = GetWorld();
+	if (!World)
 	{
-		if (UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World))
-		{
-			BoatGameInstance->SendQueueJoin();
-		}
+		return;
+	}
+
+	UBoatGameInstance* BoatGameInstance = GetBoatGameInstance(World);
+	if (!BoatGameInstance)
+	{
+		return;
+	}
+
+	if (BoatGameInstance->IsPassthroughMode())
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), TEXT("FirstPersonMap"));
+	}
+	else
+	{
+		BoatGameInstance->SendQueueJoin();
 	}
 }
 

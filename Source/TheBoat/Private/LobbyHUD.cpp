@@ -16,6 +16,7 @@ void ALobbyHUD::BeginPlay()
 	if (!LobbyWidget)
 	{
 		check(false);
+		return;
 	}
 
 	LobbyWidget->AddToViewport();

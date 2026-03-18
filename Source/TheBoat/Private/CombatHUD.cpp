@@ -26,6 +26,7 @@ void ACombatHUD::BeginPlay()
 	if (!CombatWidget)
 	{
 		check(false);
+		return;
 	}
 
 	CombatWidget->AddToViewport();

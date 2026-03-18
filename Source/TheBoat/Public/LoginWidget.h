@@ -24,6 +24,9 @@ protected:
 	UButton* LoginButton;
 
 	UPROPERTY(meta = (BindWidget))
+	UButton* PassthroughButton;
+
+	UPROPERTY(meta = (BindWidget))
 	UTextBlock* LoginText;
 
 private:
@@ -32,6 +35,9 @@ private:
 
 	UFUNCTION()
 	void OnLoginButtonClicked();
+
+	UFUNCTION()
+	void OnPassthroughButtonClicked();
 
 	FDelegateHandle StatusMessageChangedHandle;
 	FDelegateHandle LoginSucceededHandle;

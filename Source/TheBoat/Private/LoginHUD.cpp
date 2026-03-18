@@ -19,4 +19,6 @@ void ALoginHUD::BeginPlay()
 	}
 	LoginWidget->AddToViewport();
 	LoginWidget->Set();
+
+	GetOwningPlayerController()->SetShowMouseCursor(true);
 }
